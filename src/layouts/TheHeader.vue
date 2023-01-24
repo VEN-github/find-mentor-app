@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full mb-8 md:mb-12 md:py-6 xl:mb-16">
+  <header class="w-full md:py-6">
     <div class="container flex justify-between items-center mx-auto py-4 px-8">
       <BrandLogo />
       <NavLinks />

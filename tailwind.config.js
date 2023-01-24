@@ -9,11 +9,13 @@ module.exports = {
       primaryFg: "#00473e",
       secondaryFg: "#475d5b",
       accentFg: "#fa5246",
+      white: "#fff",
+      red: "#CD1E1E",
     },
     fontFamily: {
       sans: ["Inter", "sans-serif"],
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

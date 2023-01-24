@@ -1,14 +1,20 @@
 <template>
   <ul class="hidden space-x-1 items-center text-primaryFg lg:flex">
     <li>
-      <a href="#" class="py-2.5 px-4 font-semibold hover:opacity-70">
+      <RouterLink
+        to="/mentors"
+        class="py-2.5 px-4 font-semibold hover:opacity-70"
+      >
         Find Mentors
-      </a>
+      </RouterLink>
     </li>
     <li>
-      <a href="#" class="py-2.5 px-4 font-semibold hover:opacity-70">
+      <RouterLink
+        to="/mentors/create"
+        class="py-2.5 px-4 font-semibold hover:opacity-70"
+      >
         Become a Mentor
-      </a>
+      </RouterLink>
     </li>
     <li>
       <a href="#" class="py-2.5 px-4 font-semibold hover:opacity-70">
@@ -33,3 +39,13 @@
     </li>
   </ul>
 </template>
+
+<script>
+import { RouterLink } from "vue-router";
+
+export default {
+  components: {
+    RouterLink,
+  },
+};
+</script>
