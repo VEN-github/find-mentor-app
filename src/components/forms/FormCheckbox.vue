@@ -35,7 +35,7 @@ export default {
     input: {
       type: String,
       default() {
-        return "";
+        return null;
       },
     },
     modelValue: {

@@ -1,6 +1,6 @@
 <template>
   <RouterLink to="/">
-    <img src="@/assets/images/logo.svg" alt="Brand Logo" />
+    <img src="@/assets/images/logo.svg" alt="Brand Logo" loading="lazy" />
   </RouterLink>
 </template>
 

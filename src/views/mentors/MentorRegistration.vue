@@ -1,4 +1,19 @@
 <template>
+  <div v-if="errorMsg" class="fixed top-7 right-7 z-10">
+    <div class="p-6 border-l-4 border-red bg-lightRed">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <Icon icon="ph:x-circle-fill" class="text-xl text-red" />
+        </div>
+        <div class="ml-3">
+          <div class="text-sm text-red">
+            <p>{{ errorMsg }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section class="mt-8">
     <div class="container mx-auto px-8 pb-8">
       <h1 class="mb-8 text-3xl font-medium text-primaryFg">
@@ -137,13 +152,33 @@
 </template>
 
 <script>
-import FormInput from "../../components/forms/FormInput.vue";
-import FormCheckbox from "../../components/forms/FormCheckbox.vue";
+import FormInput from "@/components/forms/FormInput.vue";
+import FormCheckbox from "@/components/forms/FormCheckbox.vue";
 
 export default {
   components: {
     FormInput,
     FormCheckbox,
+  },
+  beforeRouteLeave(_, _2, next) {
+    const { firstName, lastName, email, about, rate, expertise } = this;
+    if (
+      firstName.value === "" &&
+      lastName.value === "" &&
+      email.value === "" &&
+      about.value === "" &&
+      rate.value === "" &&
+      expertise.value.length === 0
+    ) {
+      next();
+    } else if (this.changesSaved) {
+      next();
+    } else {
+      const response = confirm(
+        "Are you sure you want to leave this page?\n\nYou have unsaved changes. If you leave the page, these changes will be lost"
+      );
+      next(response);
+    }
   },
   data() {
     return {
@@ -184,7 +219,23 @@ export default {
         isInvalid: false,
       },
       formIsValid: true,
+      errorMsg: null,
     };
+  },
+  computed: {
+    changesSaved() {
+      return this.$store.getters["mentors/changesSaved"];
+    },
+    slug() {
+      const string = `${this.firstName.value} ${this.lastName.value}`;
+      return string
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9 ]/g, "")
+        .replace(/\s+/g, "-");
+    },
   },
   methods: {
     clearValidity(key) {
@@ -230,14 +281,22 @@ export default {
         this.formIsValid = false;
       }
     },
-    addMentor() {
+    showErrorMessage(error) {
+      this.errorMsg = error;
+
+      setTimeout(() => {
+        this.errorMsg = null;
+      }, 5000);
+    },
+    async addMentor() {
       this.validateForm();
 
       if (!this.formIsValid) return;
 
       const { firstName, lastName, email, about, rate, expertise } = this;
       const formData = {
-        id: "m1",
+        id: Date.now(),
+        slug: this.slug,
         firstName: firstName.value,
         lastName: lastName.value,
         email: email.value,
@@ -245,7 +304,11 @@ export default {
         rate: rate.value,
         expertise: expertise.value,
       };
-      this.$store.dispatch("mentors/registerMentor", formData);
+      try {
+        await this.$store.dispatch("mentors/registerMentor", formData);
+      } catch (error) {
+        this.showErrorMessage(error.message);
+      }
     },
   },
 };

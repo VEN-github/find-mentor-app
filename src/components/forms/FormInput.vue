@@ -36,19 +36,19 @@ export default {
     label: {
       type: String,
       default() {
-        return "";
+        return null;
       },
     },
     type: {
       type: String,
       default() {
-        return "";
+        return null;
       },
     },
     input: {
       type: String,
       default() {
-        return "";
+        return null;
       },
     },
     modelValue: {

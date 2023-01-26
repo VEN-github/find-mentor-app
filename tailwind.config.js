@@ -11,6 +11,8 @@ module.exports = {
       accentFg: "#fa5246",
       white: "#fff",
       red: "#CD1E1E",
+      lightRed: "#EBCCCA",
+      lightGray: "#b3b3b3",
     },
     fontFamily: {
       sans: ["Inter", "sans-serif"],
