@@ -182,13 +182,6 @@ export default {
   },
   data() {
     return {
-      expertiseList: [
-        { id: 1, name: "Frontend Development" },
-        { id: 2, name: "Backend Development" },
-        { id: 3, name: "Fullstack Development" },
-        { id: 4, name: "UI / UX Design" },
-        { id: 5, name: "DevOps" },
-      ],
       firstName: {
         value: "",
         isInvalid: false,
@@ -223,6 +216,9 @@ export default {
     };
   },
   computed: {
+    expertiseList() {
+      return this.$store.getters["mentors/getExpertiseList"];
+    },
     changesSaved() {
       return this.$store.getters["mentors/changesSaved"];
     },

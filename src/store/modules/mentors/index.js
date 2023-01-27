@@ -5,12 +5,22 @@ const mentorsModule = {
   namespaced: true,
   state() {
     return {
+      expertiseList: [
+        { id: 1, name: "Frontend Development" },
+        { id: 2, name: "Backend Development" },
+        { id: 3, name: "Fullstack Development" },
+        { id: 4, name: "UI / UX Design" },
+        { id: 5, name: "DevOps" },
+      ],
       mentors: [],
       mentor: null,
       changesSaved: false,
     };
   },
   getters: {
+    getExpertiseList({ expertiseList }) {
+      return expertiseList;
+    },
     getAllMentors({ mentors }) {
       return mentors;
     },

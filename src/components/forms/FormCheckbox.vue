@@ -2,6 +2,7 @@
   <div class="flex items-start">
     <div class="flex items-center h-5">
       <input
+        :id="id"
         v-model="model.value"
         type="checkbox"
         class="h-4 w-4 rounded border-secondaryFg text-secondaryBg focus:ring-secondaryBg"
@@ -14,6 +15,7 @@
     </div>
     <div class="ml-3 text-sm">
       <label
+        :for="id"
         class="font-medium text-primaryFg"
         :class="{ 'text-red': modelValue.isInvalid }"
       >
@@ -54,6 +56,15 @@ export default {
       set(value) {
         this.$emit("update:modelValue", value);
       },
+    },
+    id() {
+      return this.item.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9 ]/g, "")
+        .replace(/\s+/g, "-");
     },
   },
   methods: {

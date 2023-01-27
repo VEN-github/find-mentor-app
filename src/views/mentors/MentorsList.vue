@@ -18,30 +18,19 @@
         ex placeat modi magni quia error alias, adipisci rem similique, at omnis
         eligendi optio eos harum.
       </p>
-      <!-- <div class="flex items-center justify-center">
-        <div
-          class="flex items-center gap-6 p-1 border border-secondaryBg rounded-xl"
+      <div>
+        <h3 class="mb-4 font-semibold text-primaryFg">Categories</h3>
+        <ul
+          class="overflow-hidden w-full text-sm font-medium bg-white bg-opacity-40 text-primaryFg border border-lightGray rounded-lg sm:flex sm:items-center"
         >
-          <button
-            type="button"
-            class="px-4 py-2 text-sm font-medium capitalize text-primaryFg bg-secondaryBg md:py-3 rounded-xl md:px-12"
-          >
-            design
-          </button>
-          <button
-            type="button"
-            class="px-4 py-2 text-sm font-medium capitalize text-primaryFg rounded-xl transition-colors duration-300 hover:bg-secondaryBg md:py-3 md:px-12"
-          >
-            development
-          </button>
-          <button
-            type="button"
-            class="px-4 py-2 text-sm font-medium capitalize text-primaryFg rounded-xl transition-colors duration-300 hover:bg-secondaryBg md:py-3 md:px-12"
-          >
-            development
-          </button>
-        </div>
-      </div> -->
+          <MentorFilters
+            v-for="filter in expertiseList"
+            :key="filter.id"
+            v-model="selectedFilters"
+            :filter="filter"
+          />
+        </ul>
+      </div>
       <ul
         role="list"
         class="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:mt-16"
@@ -103,6 +92,7 @@
 <script>
 import { RouterLink } from "vue-router";
 
+import MentorFilters from "@/components/MentorFilters.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import EmptyState from "@/components/EmptyState.vue";
 import MentorCard from "@/components/MentorCard.vue";
@@ -110,6 +100,7 @@ import MentorCard from "@/components/MentorCard.vue";
 export default {
   components: {
     RouterLink,
+    MentorFilters,
     SkeletonLoader,
     EmptyState,
     MentorCard,
@@ -118,11 +109,21 @@ export default {
     return {
       isLoading: false,
       isError: false,
+      selectedFilters: [],
     };
   },
   computed: {
+    expertiseList() {
+      return this.$store.getters["mentors/getExpertiseList"];
+    },
     mentors() {
-      return this.$store.getters["mentors/getAllMentors"];
+      const mentors = this.$store.getters["mentors/getAllMentors"];
+
+      if (this.selectedFilters.length === 0) return mentors;
+
+      return mentors.filter((mentor) =>
+        this.selectedFilters.some((filter) => mentor.expertise.includes(filter))
+      );
     },
   },
   created() {
