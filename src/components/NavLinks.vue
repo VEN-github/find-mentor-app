@@ -38,13 +38,13 @@
           class="absolute z-50 w-40 my-4 text-base bg-white rounded-lg shadow-lg"
           :class="{ hidden: !isOpen }"
         >
-          <ul class="divide-y divide-lightGray divide-opacity-40">
+          <ul>
             <li>
               <a
                 href="#"
                 class="block px-4 py-2 text-sm font-medium text-secondaryFg hover:text-primaryFg"
               >
-                Dashboard
+                Profile
               </a>
             </li>
             <li>
@@ -52,18 +52,10 @@
                 href="#"
                 class="block px-4 py-2 text-sm font-medium text-secondaryFg hover:text-primaryFg"
               >
-                Dashboard
+                Favorites
               </a>
             </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm font-medium text-secondaryFg hover:text-primaryFg"
-              >
-                Dashboard
-              </a>
-            </li>
-            <li>
+            <li class="border-t border-t-lightGray border-opacity-40">
               <button
                 type="button"
                 class="block px-4 py-2 text-sm font-medium text-secondaryFg hover:text-primaryFg"

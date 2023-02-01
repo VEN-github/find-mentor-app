@@ -1,7 +1,6 @@
 <template>
   <div class="bg-white bg-opacity-75 rounded-lg shadow-lg animate-pulse">
     <div class="p-8">
-      <div class="h-32 w-32 mx-auto rounded-full shadow-xl bg-lightGray"></div>
       <div class="h-5 mt-8 bg-lightGray rounded"></div>
       <div class="h-3 mt-3 bg-lightGray rounded"></div>
       <div class="w-28 h-8 mx-auto mt-3 bg-lightGray rounded-full"></div>

@@ -1,7 +1,7 @@
 <template>
   <label
-    class="block text-sm font-medium text-primaryFg"
-    :class="{ 'text-red': modelValue.isInvalid }"
+    class="block text-sm font-medium"
+    :class="modelValue.isInvalid ? 'text-red' : 'text-primaryFg'"
   >
     {{ label }}
   </label>
@@ -9,10 +9,12 @@
     v-if="type === 'number'"
     v-model.number="model.value"
     type="text"
-    class="block w-full mt-1 text-primaryFg rounded-md border-secondaryFg shadow-sm focus:border-secondaryBg focus:ring-secondaryBg sm:text-sm"
-    :class="{
-      'border-red focus:ring-red focus:border-red': modelValue.isInvalid,
-    }"
+    class="block w-full mt-1 text-primaryFg rounded-md shadow-sm sm:text-sm"
+    :class="
+      modelValue.isInvalid
+        ? 'border-red focus:ring-red focus:border-red'
+        : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
+    "
     @blur="clearValidity(input)"
   />
   <div
@@ -22,10 +24,12 @@
     <input
       v-model.trim="model.value"
       :type="isShow ? 'text' : 'password'"
-      class="block w-full mt-1 pr-10 text-primaryFg rounded-md border-secondaryFg shadow-sm focus:border-secondaryBg focus:ring-secondaryBg sm:text-sm"
-      :class="{
-        'border-red focus:ring-red focus:border-red': modelValue.isInvalid,
-      }"
+      class="block w-full mt-1 pr-10 text-primaryFg rounded-md shadow-sm sm:text-sm"
+      :class="
+        modelValue.isInvalid
+          ? 'border-red focus:ring-red focus:border-red'
+          : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
+      "
       @blur="clearValidity(input)"
     />
     <div
@@ -40,10 +44,12 @@
     v-else
     v-model.trim="model.value"
     :type="type"
-    class="block w-full mt-1 text-primaryFg rounded-md border-secondaryFg shadow-sm focus:border-secondaryBg focus:ring-secondaryBg sm:text-sm"
-    :class="{
-      'border-red focus:ring-red focus:border-red': modelValue.isInvalid,
-    }"
+    class="block w-full mt-1 text-primaryFg rounded-md shadow-sm sm:text-sm"
+    :class="
+      modelValue.isInvalid
+        ? 'border-red focus:ring-red focus:border-red'
+        : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
+    "
     @blur="clearValidity(input)"
   />
   <p v-if="modelValue.isInvalid" class="mt-2 text-sm text-red">

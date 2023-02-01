@@ -5,10 +5,8 @@
         :id="id"
         v-model="model.value"
         type="checkbox"
-        class="h-4 w-4 rounded border-secondaryFg text-secondaryBg focus:ring-secondaryBg"
-        :class="{
-          'border-red': modelValue.isInvalid,
-        }"
+        class="h-4 w-4 rounded text-secondaryBg focus:ring-secondaryBg"
+        :class="modelValue.isInvalid ? 'border-red' : 'border-secondaryFg'"
         :value="item.name"
         @blur="clearValidity(input)"
       />
@@ -16,8 +14,8 @@
     <div class="ml-3 text-sm">
       <label
         :for="id"
-        class="font-medium text-primaryFg"
-        :class="{ 'text-red': modelValue.isInvalid }"
+        class="font-medium"
+        :class="modelValue.isInvalid ? 'text-red' : ' text-primaryFg'"
       >
         {{ item.name }}
       </label>

@@ -104,6 +104,11 @@ export default {
           await this.$store.dispatch("login", credentials);
           this.isLoading = false;
         }
+        const redirectUrl =
+          this.$route.query.mentor != undefined
+            ? `/mentor/${this.$route.query.mentor}`
+            : "/";
+        this.$router.replace(redirectUrl);
       } catch (error) {
         this.showErrorMessage(error.message);
         this.isLoading = false;

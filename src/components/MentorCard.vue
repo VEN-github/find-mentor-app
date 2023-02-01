@@ -1,15 +1,16 @@
 <template>
-  <li class="col-span-1 bg-white bg-opacity-75 rounded-lg shadow-lg">
-    <div class="flex justify-between items-center w-full p-6">
-      <div class="flex-1 truncate">
-        <div class="flex space-x-3 items-center">
-          <h3 class="truncate text-sm font-medium text-primaryFg">
-            <RouterLink :to="`/mentor/${mentor.slug}`">
-              {{ fullName }}
-            </RouterLink>
-          </h3>
-        </div>
-        <p class="mt-1 text-sm text-secondaryFg">
+  <li
+    class="col-span-1 flex flex-col text-center bg-white bg-opacity-75 rounded-lg shadow-lg"
+  >
+    <div class="flex flex-1 flex-col p-8">
+      <h3 class="mt-6 text-2xl font-semibold capitalize text-primaryFg">
+        <RouterLink :to="`/mentor/${mentor.slug}`">
+          {{ fullName }}
+        </RouterLink>
+      </h3>
+      <dl class="flex justify-between flex-grow flex-col mt-1">
+        <dt class="sr-only">Title</dt>
+        <dd class="text-sm text-secondaryFg">
           <span v-for="expert in mentor.expertise" :key="expert">
             {{ expert
             }}<span
@@ -18,11 +19,16 @@
               /
             </span>
           </span>
-        </p>
-      </div>
-      <p class="px-2.5 py-1.5 text-sm bg-secondaryBg text-white rounded-full">
-        {{ formattedRate }}/hr
-      </p>
+        </dd>
+        <dt class="sr-only">Role</dt>
+        <dd class="mt-3">
+          <span
+            class="px-2.5 py-1.5 text-lg font-medium bg-secondaryBg text-white rounded-full"
+          >
+            {{ formattedRate }}/hr
+          </span>
+        </dd>
+      </dl>
     </div>
     <div>
       <div class="flex -mt-px">

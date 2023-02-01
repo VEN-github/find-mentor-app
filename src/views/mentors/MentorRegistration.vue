@@ -49,8 +49,8 @@
                 <div class="col-span-6">
                   <label
                     for="about"
-                    class="block text-sm font-medium text-primaryFg"
-                    :class="{ 'text-red': about.isInvalid }"
+                    class="block text-sm font-medium"
+                    :class="about.isInvalid ? 'text-red' : 'text-primaryFg'"
                   >
                     About*
                   </label>
@@ -59,11 +59,12 @@
                       id="about"
                       v-model.trim="about.value"
                       rows="3"
-                      class="block w-full mt-1 text-primaryFg rounded-md border-secondaryFg shadow-sm focus:border-secondaryBg focus:ring-secondaryBg sm:text-sm"
-                      :class="{
-                        'border-red focus:ring-red focus:border-red':
-                          about.isInvalid,
-                      }"
+                      class="block w-full mt-1 text-primaryFg rounded-md shadow-sm sm:text-sm"
+                      :class="
+                        about.isInvalid
+                          ? 'border-red focus:ring-red focus:border-red'
+                          : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
+                      "
                       @blur="clearValidity('about')"
                     ></textarea>
                   </div>
@@ -101,8 +102,8 @@
               <fieldset>
                 <legend class="sr-only">Areas of Expertise</legend>
                 <div
-                  class="text-base font-medium text-primaryFg"
-                  :class="{ 'text-red': expertise.isInvalid }"
+                  class="text-base font-medium"
+                  :class="expertise.isInvalid ? 'text-red' : 'text-primaryFg'"
                   aria-hidden="true"
                 >
                   Areas of Expertise*

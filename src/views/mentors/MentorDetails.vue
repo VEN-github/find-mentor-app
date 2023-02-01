@@ -25,17 +25,33 @@
           class="flex justify-stretch space-y-4 space-y-reverse flex-col-reverse mt-6 sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse sm:flex-row-reverse md:space-x-3 md:flex-row md:mt-0"
         >
           <button
+            v-if="isAuthenticated"
             type="button"
             class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
           >
             Add to favorites
           </button>
+          <RouterLink
+            v-else
+            :to="`/login?mentor=${slug}`"
+            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
+          >
+            Add to favorites
+          </RouterLink>
           <button
+            v-if="isAuthenticated"
             type="button"
             class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primaryFg bg-secondaryBg rounded-md shadow transition duration-300 hover:bg-opacity-75"
           >
             Contact
           </button>
+          <RouterLink
+            v-else
+            :to="`/login?mentor=${slug}`"
+            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primaryFg bg-secondaryBg rounded-md shadow transition duration-300 hover:bg-opacity-75"
+          >
+            Contact
+          </RouterLink>
         </div>
       </div>
       <div class="mx-auto mt-8">
@@ -43,10 +59,7 @@
           <section aria-labelledby="mentor-information-title">
             <div class="bg-white shadow-lg sm:rounded-lg">
               <div class="px-4 py-5 sm:px-6">
-                <h2
-                  id="applicant-information-title"
-                  class="text-lg font-medium leading-6 text-primaryFg"
-                >
+                <h2 class="text-lg font-medium leading-6 text-primaryFg">
                   Mentor Information
                 </h2>
                 <p class="mt-1 max-w-2xl text-sm text-secondaryFg">
@@ -88,7 +101,12 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
+
 export default {
+  components: {
+    RouterLink,
+  },
   props: {
     slug: {
       type: String,
@@ -109,6 +127,9 @@ export default {
         style: "currency",
         currency: "PHP",
       }).format(this.mentor.rate);
+    },
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
     },
   },
   created() {
