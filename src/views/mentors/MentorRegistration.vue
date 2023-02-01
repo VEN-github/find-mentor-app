@@ -1,20 +1,6 @@
 <template>
-  <div v-if="errorMsg" class="fixed top-7 right-7 z-10">
-    <div class="p-6 border-l-4 border-red bg-lightRed">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <Icon icon="ph:x-circle-fill" class="text-xl text-red" />
-        </div>
-        <div class="ml-3">
-          <div class="text-sm text-red">
-            <p>{{ errorMsg }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <section class="mt-8">
+    <AlertMessage :error-msg="errorMsg" />
     <div class="container mx-auto px-8 pb-8">
       <h1 class="mb-8 text-3xl font-medium text-primaryFg">
         Register as a mentor now!
@@ -152,11 +138,13 @@
 </template>
 
 <script>
+import AlertMessage from "@/components/AlertMessage.vue";
 import FormInput from "@/components/forms/FormInput.vue";
 import FormCheckbox from "@/components/forms/FormCheckbox.vue";
 
 export default {
   components: {
+    AlertMessage,
     FormInput,
     FormCheckbox,
   },

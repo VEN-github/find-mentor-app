@@ -15,6 +15,27 @@
     }"
     @blur="clearValidity(input)"
   />
+  <div
+    v-else-if="input === 'password' || input === 'confirmPassword'"
+    class="relative"
+  >
+    <input
+      v-model.trim="model.value"
+      :type="isShow ? 'text' : 'password'"
+      class="block w-full mt-1 pr-10 text-primaryFg rounded-md border-secondaryFg shadow-sm focus:border-secondaryBg focus:ring-secondaryBg sm:text-sm"
+      :class="{
+        'border-red focus:ring-red focus:border-red': modelValue.isInvalid,
+      }"
+      @blur="clearValidity(input)"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center mr-3 cursor-pointer"
+      @click="showPassword"
+    >
+      <Icon v-if="!isShow" icon="ri:eye-off-line" class="text-secondaryFg" />
+      <Icon v-else icon="ri:eye-line" class="text-secondaryFg" />
+    </div>
+  </div>
   <input
     v-else
     v-model.trim="model.value"
@@ -59,6 +80,11 @@ export default {
     },
   },
   emits: ["update:modelValue", "clearValidity"],
+  data() {
+    return {
+      isShow: false,
+    };
+  },
   computed: {
     model: {
       get() {
@@ -72,6 +98,9 @@ export default {
   methods: {
     clearValidity(key) {
       this.$emit("clearValidity", key);
+    },
+    showPassword() {
+      this.isShow = !this.isShow;
     },
   },
 };

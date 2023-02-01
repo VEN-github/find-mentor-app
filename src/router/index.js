@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import store from "@/store";
 import HomeView from "@/views/HomeView.vue";
 import NotFound from "@/views/NotFound.vue";
 
@@ -27,11 +28,24 @@ const router = createRouter({
       name: "become-a-mentor",
       component: () => import("@/views/mentors/MentorRegistration.vue"),
     },
-    // {
-    //   path: "/requests",
-    //   name: "requests",
-    //   // component: () => import(null),
-    // },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/auth/UserAuth.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/account/create",
+      name: "sign-up",
+      component: () => import("@/views/auth/UserAuth.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/requests",
+      name: "requests",
+      component: () => import("@/views/mentors/MentorRegistration.vue"),
+      meta: { requiresAuth: true },
+    },
     {
       path: "/:notFound(.*)",
       name: "not-found",
@@ -39,6 +53,14 @@ const router = createRouter({
     },
   ],
   linkActiveClass: "active",
+});
+
+router.beforeEach((to, _, next) => {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

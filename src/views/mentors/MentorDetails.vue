@@ -5,19 +5,6 @@
         class="mx-auto md:flex md:justify-between md:space-x-5 md:items-center"
       >
         <div class="flex space-x-5 items-center">
-          <div class="flex-shrink-0">
-            <div class="relative">
-              <img
-                class="h-16 w-16 rounded-full"
-                src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                alt=""
-              />
-              <span
-                class="absolute inset-0 rounded-full shadow-inner"
-                aria-hidden="true"
-              ></span>
-            </div>
-          </div>
           <div>
             <h1 class="text-2xl font-bold text-primaryFg">{{ fullName }}</h1>
             <p class="text-sm font-medium text-secondaryFg">
@@ -39,7 +26,7 @@
         >
           <button
             type="button"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md shadow transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
+            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
           >
             Add to favorites
           </button>
