@@ -3,7 +3,7 @@
     <li>
       <RouterLink
         to="/mentors"
-        class="py-2.5 px-4 font-semibold hover:opacity-70"
+        class="py-2.5 px-4 font-medium hover:opacity-70"
       >
         Find Mentors
       </RouterLink>
@@ -11,7 +11,7 @@
     <li>
       <RouterLink
         to="/mentors/create"
-        class="py-2.5 px-4 font-semibold hover:opacity-70"
+        class="py-2.5 px-4 font-medium hover:opacity-70"
       >
         Become a Mentor
       </RouterLink>
@@ -72,19 +72,21 @@
       <li>
         <RouterLink
           to="/login"
-          class="py-2.5 px-4 font-semibold rounded transition-all hover:bg-primaryFg hover:text-primaryBg hover:shadow hover:opacity-70"
+          class="py-2.5 px-4 font-medium rounded transition-all hover:bg-primaryFg hover:text-primaryBg hover:shadow hover:opacity-70"
         >
           Login
         </RouterLink>
       </li>
       <li>
-        <RouterLink
-          to="/account/create"
+        <BaseButton
+          is-link
+          link="/account/create"
+          mode="primary"
+          size="lg"
           exact-active-class="exact-active"
-          class="py-2.5 px-4 font-semibold bg-secondaryBg rounded shadow transition-opacity hover:opacity-80"
         >
           Sign Up
-        </RouterLink>
+        </BaseButton>
       </li>
     </template>
   </ul>

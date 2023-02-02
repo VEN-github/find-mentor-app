@@ -24,34 +24,28 @@
         <div
           class="flex justify-stretch space-y-4 space-y-reverse flex-col-reverse mt-6 sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse sm:flex-row-reverse md:space-x-3 md:flex-row md:mt-0"
         >
-          <button
-            v-if="isAuthenticated"
-            type="button"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
+          <BaseButton v-if="isAuthenticated" mode="outline-primary">
+            Add to favorites
+          </BaseButton>
+          <BaseButton
+            v-else
+            is-link
+            :link="`/login?mentor=${slug}`"
+            mode="outline-primary"
           >
             Add to favorites
-          </button>
-          <RouterLink
+          </BaseButton>
+          <BaseButton v-if="isAuthenticated" mode="primary">
+            Contact
+          </BaseButton>
+          <BaseButton
             v-else
-            :to="`/login?mentor=${slug}`"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondaryBg border border-secondaryBg rounded-md transition-colors duration-300 hover:bg-secondaryBg hover:text-primaryFg"
-          >
-            Add to favorites
-          </RouterLink>
-          <button
-            v-if="isAuthenticated"
-            type="button"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primaryFg bg-secondaryBg rounded-md shadow transition duration-300 hover:bg-opacity-75"
+            is-link
+            :link="`/login?mentor=${slug}`"
+            mode="primary"
           >
             Contact
-          </button>
-          <RouterLink
-            v-else
-            :to="`/login?mentor=${slug}`"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primaryFg bg-secondaryBg rounded-md shadow transition duration-300 hover:bg-opacity-75"
-          >
-            Contact
-          </RouterLink>
+          </BaseButton>
         </div>
       </div>
       <div class="mx-auto mt-8">
@@ -101,12 +95,7 @@
 </template>
 
 <script>
-import { RouterLink } from "vue-router";
-
 export default {
-  components: {
-    RouterLink,
-  },
   props: {
     slug: {
       type: String,

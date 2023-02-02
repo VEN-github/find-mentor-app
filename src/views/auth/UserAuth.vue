@@ -99,16 +99,17 @@ export default {
           this.isLoading = true;
           await this.$store.dispatch("signup", credentials);
           this.isLoading = false;
+          this.$router.replace("/login");
         } else {
           this.isLoading = true;
           await this.$store.dispatch("login", credentials);
           this.isLoading = false;
+          const redirectUrl =
+            this.$route.query.mentor != undefined
+              ? `/mentor/${this.$route.query.mentor}`
+              : "/";
+          this.$router.replace(redirectUrl);
         }
-        const redirectUrl =
-          this.$route.query.mentor != undefined
-            ? `/mentor/${this.$route.query.mentor}`
-            : "/";
-        this.$router.replace(redirectUrl);
       } catch (error) {
         this.showErrorMessage(error.message);
         this.isLoading = false;

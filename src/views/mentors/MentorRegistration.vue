@@ -126,12 +126,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <button
-            type="submit"
-            class="inline-flex justify-center py-2 px-4 text-sm font-medium bg-secondaryBg text-primaryFg border rounded-md border-secondaryBg shadow-sm transition duration-100 hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-secondaryBg focus:ring-offset-2"
-          >
-            Register
-          </button>
+          <BaseButton type="submit" mode="primary">Register</BaseButton>
         </div>
       </form>
     </div>

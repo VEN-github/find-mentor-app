@@ -45,14 +45,15 @@
       />
     </div>
     <div>
-      <button
+      <BaseButton
         type="submit"
-        class="flex justify-center w-full py-2.5 px-4 text-sm font-medium bg-secondaryBg text-primaryFg select-none rounded-md shadow-sm transition-colors hover:bg-opacity-75"
-        :class="{ 'items-center gap-2 focus:ring-0': isLoading }"
+        mode="primary"
+        class="w-full"
+        :class="{ 'gap-2': isLoading }"
       >
         <Icon v-if="isLoading" icon="gg:spinner" class="text-sm animate-spin" />
         {{ isLoading ? "Loading" : "Sign Up" }}
-      </button>
+      </BaseButton>
     </div>
   </form>
 </template>

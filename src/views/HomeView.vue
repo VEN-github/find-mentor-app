@@ -19,18 +19,12 @@
         <div
           class="flex flex-col gap-4 sm:justify-center sm:flex-row lg:justify-start"
         >
-          <a
-            href="#"
-            class="inline-block px-8 py-3 text-sm font-semibold text-center bg-secondaryBg text-primaryFg rounded-lg outline-none transition duration-100 hover:opacity-75 md:text-base lg:shadow-xl"
-          >
-            Get Started
-          </a>
-          <a
-            href="#"
-            class="inline-block px-8 py-3 text-sm font-semibold text-center bg-primaryFg text-primaryBg bg-opacity-70 rounded-lg outline-none transition duration-100 hover:bg-opacity-100 md:text-base"
-          >
+          <BaseButton is-link link="/mentors" mode="primary" size="lg">
+            Get started
+          </BaseButton>
+          <BaseButton is-link link="/mentors" mode="secondary" size="lg">
             Take tour
-          </a>
+          </BaseButton>
         </div>
       </div>
       <div
