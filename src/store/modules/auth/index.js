@@ -1,5 +1,6 @@
 import router from "@/router";
 import axios from "axios";
+import { AES, enc } from "crypto-js";
 
 const authModule = {
   state() {
@@ -43,7 +44,7 @@ const authModule = {
         }
       }
     },
-    async login({ commit }, credentials) {
+    async login({ commit, dispatch }, credentials) {
       try {
         const login = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDJbUM42MjJw5B7VbfE6qXcvyqlBzIob4A",
@@ -64,6 +65,7 @@ const authModule = {
               tokenExpiration: login.data.expiresIn,
             };
             commit("setLoggedUser", user);
+            dispatch("storeLoggedUser", user);
           }
         }
       } catch ({ response: { data } }) {
@@ -80,7 +82,26 @@ const authModule = {
     },
     logout({ commit }) {
       commit("setLoggedUser", null);
+      sessionStorage.removeItem("user");
       router.replace("/");
+    },
+    async loadLoggedUser({ state, commit }) {
+      let user = await JSON.parse(sessionStorage.getItem("user"));
+
+      if (user) {
+        var bytes = AES.decrypt(user, "secret key 123");
+        var decryptedData = JSON.parse(bytes.toString(enc.Utf8));
+        commit("setLoggedUser", decryptedData);
+        return;
+      }
+      sessionStorage.setItem("user", JSON.stringify(state.loggedUser));
+    },
+    storeLoggedUser(_, user) {
+      var ciphertext = AES.encrypt(
+        JSON.stringify(user),
+        "secret key 123"
+      ).toString();
+      sessionStorage.setItem("user", JSON.stringify(ciphertext));
     },
   },
 };

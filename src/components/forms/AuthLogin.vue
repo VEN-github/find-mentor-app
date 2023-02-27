@@ -31,70 +31,63 @@
   </form>
 </template>
 
-<script>
+<script setup>
+import { ref, reactive } from "vue";
 import FormInput from "@/components/forms/FormInput.vue";
 
-export default {
-  components: {
-    FormInput,
-  },
-  props: {
-    isLoading: {
-      type: Boolean,
-      default() {
-        return false;
-      },
+defineProps({
+  isLoading: {
+    type: Boolean,
+    default() {
+      return false;
     },
   },
-  emits: ["submitForm"],
-  data() {
-    return {
-      email: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      password: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      formIsValid: true,
-    };
-  },
-  methods: {
-    clearValidity(key) {
-      if (this[key].value.length === 0) return;
-      this[key].isInvalid = false;
-    },
-    validateForm() {
-      const { email, password } = this;
+});
 
-      this.formIsValid = true;
+const emit = defineEmits(["submitForm"]);
 
-      if (email.value === "") {
-        email.isInvalid = true;
-        email.errorMsg = "Please input email address";
-        this.formIsValid = false;
-      }
+const email = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const password = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const formIsValid = ref(true);
 
-      if (password.value === "") {
-        password.isInvalid = true;
-        password.errorMsg = "Please input password";
-        this.formIsValid = false;
-      }
-    },
-    submitForm() {
-      this.validateForm();
+function clearValidity(key) {
+  if (key.value.length === 0) return;
+  key.isInvalid = false;
+}
 
-      if (!this.formIsValid) return;
+function validateForm() {
+  formIsValid.value = true;
 
-      const credentials = {
-        email: this.email.value,
-        password: this.password.value,
-      };
-      this.$emit("submitForm", credentials);
-    },
-  },
-};
+  if (email.value === "") {
+    email.isInvalid = true;
+    email.errorMsg = "Please input email address";
+    formIsValid.value = false;
+  }
+
+  if (password.value === "") {
+    password.isInvalid = true;
+    password.errorMsg = "Please input password";
+    formIsValid.value = false;
+  }
+}
+
+function submitForm() {
+  validateForm();
+
+  if (!formIsValid.value) return;
+
+  const credentials = {
+    email: email.value,
+    password: password.value,
+  };
+  emit("submitForm", credentials);
+}
 </script>
