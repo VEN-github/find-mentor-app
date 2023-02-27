@@ -15,7 +15,7 @@
         ? 'border-red focus:ring-red focus:border-red'
         : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
     "
-    @blur="clearValidity(input)"
+    @blur="clearValidity(model)"
   />
   <div
     v-else-if="input === 'password' || input === 'confirmPassword'"
@@ -30,7 +30,7 @@
           ? 'border-red focus:ring-red focus:border-red'
           : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
       "
-      @blur="clearValidity(input)"
+      @blur="clearValidity(model)"
     />
     <div
       class="absolute inset-y-0 right-0 flex items-center mr-3 cursor-pointer"
@@ -50,64 +50,58 @@
         ? 'border-red focus:ring-red focus:border-red'
         : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
     "
-    @blur="clearValidity(input)"
+    @blur="clearValidity(model)"
   />
   <p v-if="modelValue.isInvalid" class="mt-2 text-sm text-red">
     {{ modelValue.errorMsg }}
   </p>
 </template>
 
-<script>
-export default {
-  props: {
-    label: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    type: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    input: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    modelValue: {
-      type: Object,
-      default() {
-        return {};
-      },
+<script setup>
+import { ref, computed } from "vue";
+
+const props = defineProps({
+  label: {
+    type: String,
+    default() {
+      return null;
     },
   },
-  emits: ["update:modelValue", "clearValidity"],
-  data() {
-    return {
-      isShow: false,
-    };
-  },
-  computed: {
-    model: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit("update:modelValue", value);
-      },
+  type: {
+    type: String,
+    default() {
+      return null;
     },
   },
-  methods: {
-    clearValidity(key) {
-      this.$emit("clearValidity", key);
-    },
-    showPassword() {
-      this.isShow = !this.isShow;
+  input: {
+    type: String,
+    default() {
+      return null;
     },
   },
-};
+  modelValue: {
+    type: Object,
+    default() {
+      return {};
+    },
+  },
+});
+const emit = defineEmits(["update:modelValue", "clearValidity"]);
+const isShow = ref(false);
+const model = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
+
+function clearValidity(key) {
+  emit("clearValidity", key);
+}
+
+function showPassword() {
+  isShow.value = !isShow.value;
+}
 </script>

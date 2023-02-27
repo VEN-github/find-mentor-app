@@ -65,7 +65,7 @@
                           ? 'border-red focus:ring-red focus:border-red'
                           : 'border-secondaryFg focus:border-secondaryBg focus:ring-secondaryBg'
                       "
-                      @blur="clearValidity('about')"
+                      @blur="clearValidity(about)"
                     ></textarea>
                   </div>
                   <p v-if="about.isInvalid" class="mt-2 text-sm text-red">
@@ -133,163 +133,157 @@
   </section>
 </template>
 
-<script>
+<script setup>
+import { reactive, ref, computed } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
+import { useStore } from "vuex";
+
 import AlertMessage from "@/components/AlertMessage.vue";
 import FormInput from "@/components/forms/FormInput.vue";
 import FormCheckbox from "@/components/forms/FormCheckbox.vue";
 
-export default {
-  components: {
-    AlertMessage,
-    FormInput,
-    FormCheckbox,
-  },
-  beforeRouteLeave(_, _2, next) {
-    const { firstName, lastName, email, about, rate, expertise } = this;
-    if (
-      firstName.value === "" &&
-      lastName.value === "" &&
-      email.value === "" &&
-      about.value === "" &&
-      rate.value === "" &&
-      expertise.value.length === 0
-    ) {
-      next();
-    } else if (this.changesSaved) {
-      next();
-    } else {
-      const response = confirm(
-        "Are you sure you want to leave this page?\n\nYou have unsaved changes. If you leave the page, these changes will be lost"
-      );
-      next(response);
-    }
-  },
-  data() {
-    return {
-      firstName: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      lastName: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      email: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      about: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      rate: {
-        value: "",
-        isInvalid: false,
-        errorMsg: "",
-      },
-      expertise: {
-        value: [],
-        isInvalid: false,
-      },
-      formIsValid: true,
-      errorMsg: null,
-    };
-  },
-  computed: {
-    expertiseList() {
-      return this.$store.getters["mentors/getExpertiseList"];
-    },
-    changesSaved() {
-      return this.$store.getters["mentors/changesSaved"];
-    },
-    slug() {
-      const string = `${this.firstName.value} ${this.lastName.value}`;
-      return string
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9 ]/g, "")
-        .replace(/\s+/g, "-");
-    },
-  },
-  methods: {
-    clearValidity(key) {
-      if (this[key].value.length === 0) return;
-      this[key].isInvalid = false;
-    },
-    validateForm() {
-      const { firstName, lastName, email, about, rate, expertise } = this;
+onBeforeRouteLeave((_, _2, next) => {
+  if (
+    firstName.value === "" &&
+    lastName.value === "" &&
+    email.value === "" &&
+    about.value === "" &&
+    rate.value === "" &&
+    expertise.value.length === 0
+  ) {
+    next();
+  } else if (changesSaved.value) {
+    next();
+  } else {
+    const response = confirm(
+      "Are you sure you want to leave this page?\n\nYou have unsaved changes. If you leave the page, these changes will be lost"
+    );
+    next(response);
+  }
+});
 
-      this.formIsValid = true;
+const store = useStore();
+const firstName = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const lastName = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const email = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const about = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const rate = reactive({
+  value: "",
+  isInvalid: false,
+  errorMsg: "",
+});
+const expertise = reactive({
+  value: [],
+  isInvalid: false,
+});
+const formIsValid = ref(true);
+const errorMsg = ref(null);
 
-      if (firstName.value === "") {
-        firstName.isInvalid = true;
-        firstName.errorMsg = "Please input first name";
-        this.formIsValid = false;
-      }
-      if (lastName.value === "") {
-        lastName.isInvalid = true;
-        lastName.errorMsg = "Please input last name";
-        this.formIsValid = false;
-      }
-      if (email.value === "") {
-        email.isInvalid = true;
-        email.errorMsg = "Please input email address";
-        this.formIsValid = false;
-      }
-      if (about.value === "") {
-        about.isInvalid = true;
-        this.formIsValid = false;
-      }
-      if (isNaN(rate.value) || rate.value <= 0) {
-        rate.isInvalid = true;
-        rate.errorMsg = "Hourly rate must be a number and greater than zero";
-        this.formIsValid = false;
-      }
-      if (rate.value === "") {
-        rate.isInvalid = true;
-        rate.errorMsg = "Please input hourly rate";
-        this.formIsValid = false;
-      }
-      if (expertise.value.length === 0) {
-        expertise.isInvalid = true;
-        this.formIsValid = false;
-      }
-    },
-    showErrorMessage(error) {
-      this.errorMsg = error;
+const expertiseList = computed(() => {
+  return store.getters["mentors/getExpertiseList"];
+});
 
-      setTimeout(() => {
-        this.errorMsg = null;
-      }, 5000);
-    },
-    async addMentor() {
-      this.validateForm();
+const changesSaved = computed(() => {
+  return store.getters["mentors/changesSaved"];
+});
 
-      if (!this.formIsValid) return;
+const slug = computed(() => {
+  const string = `${firstName.value} ${lastName.value}`;
+  return string
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 ]/g, "")
+    .replace(/\s+/g, "-");
+});
 
-      const { firstName, lastName, email, about, rate, expertise } = this;
-      const formData = {
-        id: Date.now(),
-        slug: this.slug,
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        about: about.value,
-        rate: rate.value,
-        expertise: expertise.value,
-      };
-      try {
-        await this.$store.dispatch("mentors/registerMentor", formData);
-      } catch (error) {
-        this.showErrorMessage(error.message);
-      }
-    },
-  },
-};
+function clearValidity(key) {
+  if (key.value.length === 0) return;
+  key.isInvalid = false;
+}
+
+function validateForm() {
+  formIsValid.value = true;
+
+  if (firstName.value === "") {
+    firstName.isInvalid = true;
+    firstName.errorMsg = "Please input first name";
+    formIsValid.value = false;
+  }
+  if (lastName.value === "") {
+    lastName.isInvalid = true;
+    lastName.errorMsg = "Please input last name";
+    formIsValid.value = false;
+  }
+  if (email.value === "") {
+    email.isInvalid = true;
+    email.errorMsg = "Please input email address";
+    formIsValid.value = false;
+  }
+  if (about.value === "") {
+    about.isInvalid = true;
+    formIsValid.value = false;
+  }
+  if (isNaN(rate.value) || rate.value <= 0) {
+    rate.isInvalid = true;
+    rate.errorMsg = "Hourly rate must be a number and greater than zero";
+    formIsValid.value = false;
+  }
+  if (rate.value === "") {
+    rate.isInvalid = true;
+    rate.errorMsg = "Please input hourly rate";
+    formIsValid.value = false;
+  }
+  if (expertise.value.length === 0) {
+    expertise.isInvalid = true;
+    formIsValid.value = false;
+  }
+}
+
+function showErrorMessage(error) {
+  errorMsg.value = error;
+
+  setTimeout(() => {
+    errorMsg.value = null;
+  }, 5000);
+}
+
+async function addMentor() {
+  validateForm();
+
+  if (!formIsValid.value) return;
+
+  const formData = {
+    id: Date.now(),
+    slug: slug.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    about: about.value,
+    rate: rate.value,
+    expertise: expertise.value,
+  };
+  try {
+    await store.dispatch("mentors/registerMentor", formData);
+  } catch (error) {
+    showErrorMessage(error.message);
+  }
+}
 </script>

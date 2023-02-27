@@ -18,7 +18,7 @@
         ex placeat modi magni quia error alias, adipisci rem similique, at omnis
         eligendi optio eos harum.
       </p>
-      <div>
+      <div v-if="!isLoading && !isError">
         <h3 class="mb-4 font-semibold text-primaryFg">Categories</h3>
         <ul
           class="overflow-hidden w-full text-sm font-medium bg-white bg-opacity-40 text-primaryFg border border-lightGray rounded-lg sm:flex sm:items-center"
@@ -89,57 +89,47 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
+import { ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 import MentorFilters from "@/components/MentorFilters.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import EmptyState from "@/components/EmptyState.vue";
 import MentorCard from "@/components/MentorCard.vue";
 
-export default {
-  components: {
-    RouterLink,
-    MentorFilters,
-    SkeletonLoader,
-    EmptyState,
-    MentorCard,
-  },
-  data() {
-    return {
-      isLoading: false,
-      isError: false,
-      selectedFilters: [],
-    };
-  },
-  computed: {
-    expertiseList() {
-      return this.$store.getters["mentors/getExpertiseList"];
-    },
-    mentors() {
-      const mentors = this.$store.getters["mentors/getAllMentors"];
+const isLoading = ref(false);
+const isError = ref(false);
+const selectedFilters = ref([]);
+const store = useStore();
 
-      if (this.selectedFilters.length === 0) return mentors;
+const expertiseList = computed(() => {
+  return store.getters["mentors/getExpertiseList"];
+});
 
-      return mentors.filter((mentor) =>
-        this.selectedFilters.some((filter) => mentor.expertise.includes(filter))
-      );
-    },
-  },
-  created() {
-    this.loadMentors();
-  },
-  methods: {
-    async loadMentors() {
-      try {
-        this.isLoading = true;
-        await this.$store.dispatch("mentors/loadMentors");
-        this.isLoading = false;
-      } catch (error) {
-        this.isLoading = false;
-        this.isError = true;
-      }
-    },
-  },
-};
+const mentors = computed(() => {
+  const mentors = store.getters["mentors/getAllMentors"];
+
+  if (selectedFilters.value.length === 0) return mentors;
+
+  return mentors.filter((mentor) =>
+    selectedFilters.value.some((filter) => mentor.expertise.includes(filter))
+  );
+});
+
+onMounted(async () => {
+  await loadMentors();
+});
+
+async function loadMentors() {
+  try {
+    isLoading.value = true;
+    await store.dispatch("mentors/loadMentors");
+    isLoading.value = false;
+  } catch (error) {
+    isLoading.value = false;
+    isError.value = true;
+  }
+}
 </script>

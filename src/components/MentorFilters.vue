@@ -20,41 +20,42 @@
   </li>
 </template>
 
-<script>
-export default {
-  props: {
-    filter: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    modelValue: {
-      type: Array,
-      default() {
-        return [];
-      },
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  filter: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-  emits: ["update:modelValue"],
-  computed: {
-    model: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit("update:modelValue", value);
-      },
-    },
-    id() {
-      return this.filter.name
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9 ]/g, "")
-        .replace(/\s+/g, "-");
+  modelValue: {
+    type: Array,
+    default() {
+      return [];
     },
   },
-};
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+const model = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
+
+const id = computed(() => {
+  return props.filter.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 ]/g, "")
+    .replace(/\s+/g, "-");
+});
 </script>

@@ -17,15 +17,13 @@
   </Transition>
 </template>
 
-<script>
-export default {
-  props: {
-    errorMsg: {
-      type: String,
-      default() {
-        return null;
-      },
+<script setup>
+defineProps({
+  errorMsg: {
+    type: String,
+    default() {
+      return null;
     },
   },
-};
+});
 </script>

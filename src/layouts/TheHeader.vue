@@ -8,34 +8,24 @@
   </header>
 </template>
 
-<script>
+<script setup>
+import { ref, watch } from "vue";
+
 import BrandLogo from "@/components/BrandLogo.vue";
 import NavLinks from "@/components/NavLinks.vue";
 import BurgerButton from "@/components/BurgerButton.vue";
 
-export default {
-  components: {
-    BrandLogo,
-    NavLinks,
-    BurgerButton,
-  },
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  watch: {
-    isOpen(value) {
-      if (value) document.addEventListener("click", this.detectClickOutside);
-    },
-  },
-  methods: {
-    toggleMenu() {
-      this.isOpen = !this.isOpen;
-    },
-    detectClickOutside(event) {
-      if (!event.target.closest(".hamburger")) this.isOpen = false;
-    },
-  },
-};
+const isOpen = ref(false);
+
+watch(isOpen, (value) => {
+  if (value) document.addEventListener("click", detectClickOutside);
+});
+
+function toggleMenu() {
+  isOpen.value = !isOpen.value;
+}
+
+function detectClickOutside(event) {
+  if (!event.target.closest(".hamburger")) isOpen.value = false;
+}
 </script>

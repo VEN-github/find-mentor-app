@@ -55,31 +55,27 @@
   </li>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
+import { computed } from "vue";
 
-export default {
-  components: {
-    RouterLink,
-  },
-  props: {
-    mentor: {
-      type: Object,
-      default() {
-        return {};
-      },
+const props = defineProps({
+  mentor: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-  computed: {
-    fullName() {
-      return `${this.mentor.firstName} ${this.mentor.lastName}`;
-    },
-    formattedRate() {
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "PHP",
-      }).format(this.mentor.rate);
-    },
-  },
-};
+});
+
+const fullName = computed(() => {
+  return `${props.mentor.firstName} ${props.mentor.lastName}`;
+});
+
+const formattedRate = computed(() => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "PHP",
+  }).format(props.mentor.rate);
+});
 </script>

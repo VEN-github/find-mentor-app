@@ -8,7 +8,7 @@
         class="h-4 w-4 rounded text-secondaryBg focus:ring-secondaryBg"
         :class="modelValue.isInvalid ? 'border-red' : 'border-secondaryFg'"
         :value="item.name"
-        @blur="clearValidity(input)"
+        @blur="clearValidity(model)"
       />
     </div>
     <div class="ml-3 text-sm">
@@ -23,52 +23,51 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    item: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    input: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    modelValue: {
-      type: Object,
-      default() {
-        return {};
-      },
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  item: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-  emits: ["update:modelValue", "clearValidity"],
-  computed: {
-    model: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit("update:modelValue", value);
-      },
-    },
-    id() {
-      return this.item.name
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9 ]/g, "")
-        .replace(/\s+/g, "-");
+  input: {
+    type: String,
+    default() {
+      return null;
     },
   },
-  methods: {
-    clearValidity(key) {
-      this.$emit("clearValidity", key);
+  modelValue: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-};
+});
+const emit = defineEmits(["update:modelValue", "clearValidity"]);
+
+const model = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
+
+const id = computed(() => {
+  return props.item.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 ]/g, "")
+    .replace(/\s+/g, "-");
+});
+
+function clearValidity(key) {
+  emit("clearValidity", key);
+}
 </script>

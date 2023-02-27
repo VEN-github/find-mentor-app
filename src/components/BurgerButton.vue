@@ -11,13 +11,11 @@
   </button>
 </template>
 
-<script>
-export default {
-  props: {
-    isOpen: {
-      type: Boolean,
-    },
+<script setup>
+defineProps({
+  isOpen: {
+    type: Boolean,
   },
-  emits: ["toggleMenu"],
-};
+});
+defineEmits(["toggleMenu"]);
 </script>

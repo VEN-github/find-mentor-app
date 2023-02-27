@@ -94,35 +94,41 @@
   </section>
 </template>
 
-<script>
-export default {
-  props: {
-    slug: {
-      type: String,
-      default() {
-        return null;
-      },
+<script setup>
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
+
+const props = defineProps({
+  slug: {
+    type: String,
+    default() {
+      return null;
     },
   },
-  computed: {
-    mentor() {
-      return this.$store.getters["mentors/getMentor"] ?? {};
-    },
-    fullName() {
-      return `${this.mentor?.firstName} ${this.mentor?.lastName}`;
-    },
-    formattedRate() {
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "PHP",
-      }).format(this.mentor.rate);
-    },
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;
-    },
-  },
-  created() {
-    this.$store.dispatch("mentors/loadMentor", this.slug);
-  },
-};
+});
+
+const store = useStore();
+
+const mentor = computed(() => {
+  return store.getters["mentors/getMentor"] ?? {};
+});
+
+const fullName = computed(() => {
+  return `${mentor.value?.firstName} ${mentor.value?.lastName}`;
+});
+
+const formattedRate = computed(() => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "PHP",
+  }).format(mentor.value.rate);
+});
+
+const isAuthenticated = computed(() => {
+  return store.getters.isAuthenticated;
+});
+
+onMounted(async () => {
+  await store.dispatch("mentors/loadMentor", props.slug);
+});
 </script>

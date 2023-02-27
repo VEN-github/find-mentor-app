@@ -92,45 +92,40 @@
   </ul>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
+import { ref, computed, watch } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  components: {
-    RouterLink,
-  },
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  computed: {
-    loggedUser() {
-      return this.$store.getters.getLoggedUser;
-    },
-    fullName() {
-      const user = this.$store.getters.getLoggedUser;
-      return `${user.firstName} ${user.lastName}`;
-    },
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;
-    },
-  },
-  watch: {
-    isOpen(value) {
-      if (value) document.addEventListener("click", this.detectClickOutside);
-    },
-  },
-  methods: {
-    toggleUserMenu() {
-      this.isOpen = !this.isOpen;
-    },
-    detectClickOutside(event) {
-      if (!event.target.closest(".profile")) this.isOpen = false;
-    },
-    logout() {
-      this.$store.dispatch("logout");
-    },
-  },
-};
+const isOpen = ref(false);
+const store = useStore();
+
+// const loggedUser = computed(() => {
+//   return store.getters.getLoggedUser;
+// });
+
+const fullName = computed(() => {
+  const user = store.getters.getLoggedUser;
+  return `${user.firstName} ${user.lastName}`;
+});
+
+const isAuthenticated = computed(() => {
+  return store.getters.isAuthenticated;
+});
+
+watch(isOpen, (value) => {
+  if (value) document.addEventListener("click", detectClickOutside);
+});
+
+function toggleUserMenu() {
+  isOpen.value = !isOpen.value;
+}
+
+function detectClickOutside(event) {
+  if (!event.target.closest(".profile")) isOpen.value = false;
+}
+
+function logout() {
+  store.dispatch("logout");
+}
 </script>

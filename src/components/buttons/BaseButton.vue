@@ -7,47 +7,42 @@
   </button>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
 
-export default {
-  components: {
-    RouterLink,
-  },
-  props: {
-    isLink: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
-    type: {
-      type: String,
-      default() {
-        return "button";
-      },
-    },
-    mode: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    size: {
-      type: String,
-      default() {
-        return "md";
-      },
-      validator: (value) => ["xs", "sm", "md", "lg", "xl"].includes(value),
-    },
-    link: {
-      type: String,
-      default() {
-        return "/";
-      },
+defineProps({
+  isLink: {
+    type: Boolean,
+    default() {
+      return false;
     },
   },
-};
+  type: {
+    type: String,
+    default() {
+      return "button";
+    },
+  },
+  mode: {
+    type: String,
+    default() {
+      return null;
+    },
+  },
+  size: {
+    type: String,
+    default() {
+      return "md";
+    },
+    validator: (value) => ["xs", "sm", "md", "lg", "xl"].includes(value),
+  },
+  link: {
+    type: String,
+    default() {
+      return "/";
+    },
+  },
+});
 </script>
 
 <style scoped>

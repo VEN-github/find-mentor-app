@@ -21,12 +21,7 @@
             </p>
           </div>
           <div class="flex space-x-3 mt-10 sm:pl-6">
-            <RouterLink
-              to="/"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium bg-secondaryBg text-primaryFg rounded-md shadow transition duration-300 hover:bg-opacity-75"
-            >
-              Back to homepage
-            </RouterLink>
+            <BaseButton is-link mode="primary"> Back to homepage </BaseButton>
           </div>
         </div>
       </div>
@@ -34,12 +29,6 @@
   </section>
 </template>
 
-<script>
-import { RouterLink } from "vue-router";
-
-export default {
-  components: {
-    RouterLink,
-  },
-};
+<script setup>
+import BaseButton from "@/components/buttons/BaseButton.vue";
 </script>
